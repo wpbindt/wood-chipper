@@ -14,7 +14,7 @@ source_file = SourceFile(
     '@dataclass\n'
     'class HelloWorldSayer:\n'
     '    user: str\n'
-    '\n
+    '\n'
     '    def say(self, something: str) -> str:\n'
     '        return f"Hi, {self.user}, {something}"\n'
     '\n'
@@ -33,7 +33,7 @@ expected_1 = SourceFile(
     '@dataclass\n'
     'class HelloWorldSayer:\n'
     '    user: str\n'
-    '\n
+    '\n'
     '    def say(self, something: str) -> str:\n'
     '        return f"Hi, {self.user}, {something}"\n'
     '\n'
