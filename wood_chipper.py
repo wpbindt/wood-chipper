@@ -22,14 +22,14 @@ from pathlib import Path
 class SourceFile:
     filename: str
     lines: tuple[str, ...]
-        
+
     @classmethod
     def from_file(cls, path: str) -> SourceFile:
         ...
-        
+
     def parse(self) -> AST:
         ...
-        
+
     def write(self, path: Path) -> None:
         ...
 
@@ -43,7 +43,13 @@ def non_imports(source_file: SourceFile) -> set[SourceFile]:
 
 
 def add_imports(source_file: SourceFile, imports: tuple[str, ...]) -> SourceFile:
-    ...
+    return SourceFile(
+        filename=source_file.filename,
+        lines=(
+            *imports,
+            *source_file.lines,
+        )
+    )
 
 
 def purge_unused_imports(source_file: SourceFile) -> SourceFile:
