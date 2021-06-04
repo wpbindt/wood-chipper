@@ -1,7 +1,7 @@
 from wood_chipper import add_imports, SourceFile
 
 
-def test_happy_path(
+def test_add_imports(
     source_file_info: tuple[SourceFile, tuple[str, ...], set[SourceFile]],
     imports: tuple[str, ...]
 ) -> None:
