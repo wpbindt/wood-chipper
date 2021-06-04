@@ -29,7 +29,7 @@ class SourceFile:
     def from_file(cls, path: str) -> SourceFile:
         ...
 
-    def parse(self) -> ast.AST:
+    def parse(self) -> ast.Module:
         source = '\n'.join(self.lines)
         return ast.parse(source=source, filename=self.filename)
 
@@ -38,7 +38,7 @@ class SourceFile:
 
 
 def get_imports(source_file: SourceFile) -> tuple[str, ...]:
-    import_line_numbers = []
+    import_line_numbers: list[int] = []
     for node in source_file.parse().body:
         if isinstance(node, (ast.Import, ast.ImportFrom)):
             # ast line numbers are 1-indexed
