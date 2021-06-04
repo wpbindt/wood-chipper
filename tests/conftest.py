@@ -25,7 +25,7 @@ def source_file_info() -> tuple[SourceFile, tuple[str, ...], set[SourceFile]]:
     non_import2 = SourceFile(
         filename='another_class.py',
         lines=(
-            '@dataclass'
+            '@dataclass',
             'class AnotherClass:',
             '    def execute(self):',
             '        return os.name',
