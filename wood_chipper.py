@@ -15,12 +15,13 @@
 from __future__ import annotations
 from ast import AST
 from dataclasses import dataclass
+from pathlib import Path
 
 
 @dataclass(frozen=True)
 class SourceFile:
     filename: str
-    lines: tuple[str]
+    lines: tuple[str, ...]
         
     @classmethod
     def from_file(cls, path: str) -> SourceFile:
@@ -33,18 +34,18 @@ class SourceFile:
         ...
 
 
-def imports(source_file: SourceFile) -> tuple[str]:
+def get_imports(source_file: SourceFile) -> tuple[str, ...]:
     ...
 
 
 def non_imports(source_file: SourceFile) -> set[SourceFile]:
     ...
-    
 
-def add_imports(source_file: SourceFile, imports: tuple[str]) -> SourceFile:
+
+def add_imports(source_file: SourceFile, imports: tuple[str, ...]) -> SourceFile:
     ...
-    
-    
+
+
 def purge_unused_imports(source_file: SourceFile) -> SourceFile:
     # auto_flake
     ...
