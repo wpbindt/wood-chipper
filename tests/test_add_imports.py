@@ -11,6 +11,8 @@ def test_add_imports(
         filename=source_file.filename,
         lines=(
             *imports,
+            '',
+            '',
             *source_file.lines
         )
     )

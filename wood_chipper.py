@@ -78,6 +78,8 @@ def add_imports(source_file: SourceFile, imports: tuple[str, ...]) -> SourceFile
         filename=source_file.filename,
         lines=(
             *imports,
+            '',
+            '',
             *source_file.lines,
         )
     )
