@@ -1,7 +1,11 @@
 from wood_chipper import add_imports, SourceFile
 
 
-def test_happy_path(source_file: SourceFile, imports: tuple[str, ...]) -> None:
+def test_happy_path(
+    source_file_info: tuple[SourceFile, tuple[str, ...], set[SourceFile]],
+    imports: tuple[str, ...]
+) -> None:
+    source_file, *_ = source_file_info
     actual = add_imports(source_file, imports)
     expected = SourceFile(
         filename=source_file.filename,
