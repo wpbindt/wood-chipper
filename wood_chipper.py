@@ -44,7 +44,6 @@ def get_imports(source_file: SourceFile) -> tuple[str, ...]:
                 range(node.lineno - 1, node.end_lineno)
             )
 
-
     return tuple(
         source_file.lines[line_number]
         for line_number in import_line_numbers
