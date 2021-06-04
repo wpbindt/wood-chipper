@@ -49,4 +49,3 @@ def add_imports(source_file: SourceFile, imports: tuple[str, ...]) -> SourceFile
 def purge_unused_imports(source_file: SourceFile) -> SourceFile:
     # auto_flake
     ...
-
