@@ -51,6 +51,7 @@ def get_imports(source_file: SourceFile) -> tuple[str, ...]:
         for line_number in import_line_numbers
     )
 
+
 def non_imports(source_file: SourceFile) -> set[SourceFile]:
     non_import_source_files = set()
     for node in source_file.parse().body:
