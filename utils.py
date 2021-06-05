@@ -1,5 +1,6 @@
 import ast
 import re
+from source_file import SourceFile
 
 
 def to_snake_case(name: str) -> str:
@@ -14,3 +15,27 @@ def node_to_filename(node: ast.AST) -> str:
             f'Nameless top-level node on line {getattr(node, "lineno", "??")}'
         )
     return to_snake_case(node_name) + '.py'
+
+
+def node_to_source_lines(
+    node: ast.AST,
+    context: SourceFile
+) -> tuple[str, ...]:
+    offset = len(getattr(node, 'decorator_list', []))
+    node_lines = tuple(
+        context.lines[line_number]
+        for line_number in range(
+            node.lineno - 1 - offset, node.end_lineno
+        )
+    )
+    return (*node_lines, '')
+
+
+def node_to_source_file(
+    node: ast.AST,
+    context: SourceFile
+) -> SourceFile:
+    return SourceFile(
+        filename=node_to_filename(node),
+        lines=node_to_source_lines(node, context)
+    )

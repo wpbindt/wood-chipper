@@ -1,6 +1,6 @@
 from pytest import fixture
 
-from wood_chipper import SourceFile
+from source_file import SourceFile
 
 
 @fixture

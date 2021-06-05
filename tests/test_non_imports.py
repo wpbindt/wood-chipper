@@ -1,4 +1,5 @@
-from wood_chipper import non_imports, SourceFile
+from source_file import SourceFile
+from wood_chipper import non_imports
 
 
 def test_non_imports(

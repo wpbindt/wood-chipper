@@ -14,27 +14,9 @@
 
 from __future__ import annotations
 import ast
-from dataclasses import dataclass
-from pathlib import Path
 
-from utils import node_to_filename
-
-
-@dataclass(frozen=True)
-class SourceFile:
-    filename: str
-    lines: tuple[str, ...]
-
-    @classmethod
-    def from_file(cls, path: str) -> SourceFile:
-        ...
-
-    def parse(self) -> ast.Module:
-        source = '\n'.join(self.lines)
-        return ast.parse(source=source, filename=self.filename)
-
-    def write(self, path: Path) -> None:
-        ...
+from source_file import SourceFile
+from utils import node_to_source_file
 
 
 def get_imports(source_file: SourceFile) -> tuple[str, ...]:
@@ -53,28 +35,11 @@ def get_imports(source_file: SourceFile) -> tuple[str, ...]:
 
 
 def non_imports(source_file: SourceFile) -> set[SourceFile]:
-    non_import_source_files = set()
-    non_import_nodes = filter(
-        lambda node: not isinstance(node, (ast.Import, ast.ImportFrom)),
-        source_file.parse().body
-    )
-    for node in non_import_nodes:
-        offset = len(getattr(node, 'decorator_list', []))
-        node_lines = tuple(
-            source_file.lines[line_number]
-            for line_number in range(
-                node.lineno - 1 - offset, node.end_lineno
-            )
-        )
-        node_filename = node_to_filename(node)
-        non_import_source_files.add(
-            SourceFile(
-                filename=node_filename,
-                lines=(*node_lines, '')
-            )
-        )
-
-    return non_import_source_files
+    return {
+        node_to_source_file(node=node, context=source_file)
+        for node in source_file.parse().body
+        if not isinstance(node, (ast.Import, ast.ImportFrom))
+    }
 
 
 def add_imports(source_file: SourceFile, imports: tuple[str, ...]) -> SourceFile:
