@@ -17,7 +17,7 @@ import ast
 from dataclasses import dataclass
 from pathlib import Path
 
-from utils import to_snake_case
+from utils import node_to_filename
 
 
 @dataclass(frozen=True)
@@ -66,12 +66,7 @@ def non_imports(source_file: SourceFile) -> set[SourceFile]:
                 node.lineno - 1 - offset, node.end_lineno
             )
         )
-        node_name = getattr(node, 'name', None)
-        if node_name is None:
-            raise ValueError(
-                f'Nameless top-level node on line {node.lineno}'
-            )
-        node_filename = to_snake_case(node_name) + '.py'
+        node_filename = node_to_filename(node)
         non_import_source_files.add(
             SourceFile(
                 filename=node_filename,
