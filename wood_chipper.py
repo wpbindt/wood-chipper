@@ -54,22 +54,30 @@ def get_imports(source_file: SourceFile) -> tuple[str, ...]:
 
 def non_imports(source_file: SourceFile) -> set[SourceFile]:
     non_import_source_files = set()
-    for node in source_file.parse().body:
-        if not isinstance(node, (ast.Import, ast.ImportFrom)):
-            offset = len(getattr(node, 'decorator_list', []))
-            node_lines = tuple(
-                source_file.lines[line_number]
-                for line_number in range(
-                    node.lineno - 1 - offset, node.end_lineno
-                )
+    non_import_nodes = filter(
+        lambda node: not isinstance(node, (ast.Import, ast.ImportFrom)),
+        source_file.parse().body
+    )
+    for node in non_import_nodes:
+        offset = len(getattr(node, 'decorator_list', []))
+        node_lines = tuple(
+            source_file.lines[line_number]
+            for line_number in range(
+                node.lineno - 1 - offset, node.end_lineno
             )
-            node_filename = to_snake_case(node.name) + '.py'
-            non_import_source_files.add(
-                SourceFile(
-                    filename=node_filename,
-                    lines=(*node_lines, '')
-                )
+        )
+        node_name = getattr(node, 'name', None)
+        if node_name is None:
+            raise ValueError(
+                f'Nameless top-level node on line {node.lineno}'
             )
+        node_filename = to_snake_case(node_name) + '.py'
+        non_import_source_files.add(
+            SourceFile(
+                filename=node_filename,
+                lines=(*node_lines, '')
+            )
+        )
 
     return non_import_source_files
 
