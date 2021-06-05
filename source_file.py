@@ -13,9 +13,9 @@ class SourceFile:
     def from_file(cls, path: str) -> SourceFile:
         ...
 
-    def parse(self) -> ast.Module:
+    def parse(self) -> list[ast.stmt]:
         source = '\n'.join(self.lines)
-        return ast.parse(source=source, filename=self.filename)
+        return ast.parse(source=source, filename=self.filename).body
 
     def write(self, path: Path) -> None:
         ...

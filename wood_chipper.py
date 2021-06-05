@@ -21,7 +21,7 @@ from utils import node_to_source_file
 
 def get_imports(source_file: SourceFile) -> tuple[str, ...]:
     import_line_numbers: list[int] = []
-    for node in source_file.parse().body:
+    for node in source_file.parse():
         if isinstance(node, (ast.Import, ast.ImportFrom)):
             # ast line numbers are 1-indexed
             import_line_numbers.extend(
@@ -37,7 +37,7 @@ def get_imports(source_file: SourceFile) -> tuple[str, ...]:
 def non_imports(source_file: SourceFile) -> set[SourceFile]:
     return {
         node_to_source_file(node=node, context=source_file)
-        for node in source_file.parse().body
+        for node in source_file.parse()
         if not isinstance(node, (ast.Import, ast.ImportFrom))
     }
 
