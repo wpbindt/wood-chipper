@@ -15,7 +15,7 @@
 from __future__ import annotations
 import ast
 
-import autoflake
+import autoflake  # type: ignore
 
 from source_file import SourceFile
 from utils import node_to_source_file
