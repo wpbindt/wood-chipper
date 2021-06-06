@@ -11,7 +11,7 @@ class SourceFile:
 
     @classmethod
     def from_file(cls, path: Path) -> SourceFile:
-        lines = path.read_text().split('\n')
+        lines = tuple(path.read_text().split('\n'))
         return cls(
             filename=path.name,
             lines=lines

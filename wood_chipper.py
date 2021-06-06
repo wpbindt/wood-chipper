@@ -60,11 +60,11 @@ def add_imports(source_file: SourceFile, imports: tuple[str, ...]) -> SourceFile
 
 
 def purge_unused_imports(source_file: SourceFile) -> SourceFile:
-    # auto_flake
-    temp_dir = TemporaryDirectory()
-    path = Path(temp_dir.name)
-    source_file.write(path)
-    autoflake._main(['autoflake', '-i', '--remove-all-unused-imports', str(path)], sys.stdout, None)
-    output = SourceFile.from_file(path / source_file.filename)
-    temp_dir.cleanup()
-    return output
+    code_without_unused_imports = autoflake.fix_code(
+        str(source_file),
+        remove_all_unused_imports=True
+    )
+    return SourceFile(
+        filename=source_file.filename,
+        lines=tuple(code_without_unused_imports.split('\n'))
+    )
