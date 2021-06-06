@@ -14,6 +14,11 @@
 
 from __future__ import annotations
 import ast
+from pathlib import Path
+import sys
+from tempfile import TemporaryDirectory
+
+import autoflake
 
 from source_file import SourceFile
 from utils import node_to_source_file
@@ -56,4 +61,10 @@ def add_imports(source_file: SourceFile, imports: tuple[str, ...]) -> SourceFile
 
 def purge_unused_imports(source_file: SourceFile) -> SourceFile:
     # auto_flake
-    ...
+    temp_dir = TemporaryDirectory()
+    path = Path(temp_dir.name)
+    source_file.write(path)
+    autoflake._main(['autoflake', '-i', '--remove-all-unused-imports', str(path)], sys.stdout, None)
+    output = SourceFile.from_file(path / source_file.filename)
+    temp_dir.cleanup()
+    return output
