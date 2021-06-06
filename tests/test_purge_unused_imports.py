@@ -4,7 +4,7 @@ from wood_chipper import purge_unused_imports
 
 def test_purge_unused_imports(source_file_info) -> None:
     source_file, imports, _ = source_file_info
-    actual = purge_unused_imports(source_file_info)
+    actual = purge_unused_imports(source_file)
 
     unused_imports = (
         'import this',
