@@ -14,9 +14,6 @@
 
 from __future__ import annotations
 import ast
-from pathlib import Path
-import sys
-from tempfile import TemporaryDirectory
 
 import autoflake
 
