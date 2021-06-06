@@ -10,12 +10,18 @@ class SourceFile:
     lines: tuple[str, ...]
 
     @classmethod
-    def from_file(cls, path: str) -> SourceFile:
-        ...
+    def from_file(cls, path: Path) -> SourceFile:
+        lines = path.read_text().split('\n')
+        return cls(
+            filename=path.name,
+            lines=lines
+        )
+
+    def __str__(self) -> str:
+        return '\n'.join(self.lines)
 
     def parse(self) -> list[ast.stmt]:
-        source = '\n'.join(self.lines)
-        return ast.parse(source=source, filename=self.filename).body
+        return ast.parse(source=str(self), filename=self.filename).body
 
     def write(self, path: Path) -> None:
-        ...
+        (path / self.filename).write_text(str(self))
