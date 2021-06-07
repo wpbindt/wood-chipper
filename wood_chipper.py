@@ -18,7 +18,7 @@ import ast
 import autoflake  # type: ignore
 
 from source_file import SourceFile
-from utils import node_to_source_file
+from node_to_source_file import node_to_source_file
 
 
 def get_imports(source_file: SourceFile) -> tuple[str, ...]:
