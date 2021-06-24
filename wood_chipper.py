@@ -14,6 +14,7 @@
 
 from __future__ import annotations
 import ast
+from os import PathLike
 
 import autoflake  # type: ignore
 
@@ -65,3 +66,7 @@ def purge_unused_imports(source_file: SourceFile) -> SourceFile:
         filename=source_file.filename,
         lines=tuple(code_without_unused_imports.split('\n'))
     )
+
+
+def chip_wood(source_file: SourceFile) -> set[SourceFile]:
+    ...
