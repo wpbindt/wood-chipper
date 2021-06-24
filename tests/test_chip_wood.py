@@ -10,7 +10,7 @@ CASE_DIR = Path(__file__).resolve().parent / 'integration_tests'
 
 def _parse_case(path: Path) -> tuple[SourceFile, set[SourceFile]]:
     original_file, result_dir = path.iterdir()
-    if original_file.isdir():
+    if original_file.is_dir():
         original_file, result_dir = result_dir, original_file
 
     expected_output = {
