@@ -14,12 +14,11 @@
 
 from __future__ import annotations
 import ast
-from os import PathLike
 
 import autoflake  # type: ignore
 
-from source_file import SourceFile
 from node_to_source_file import node_to_source_file
+from source_file import SourceFile
 
 
 def get_imports(source_file: SourceFile) -> tuple[str, ...]:
@@ -37,7 +36,7 @@ def get_imports(source_file: SourceFile) -> tuple[str, ...]:
     )
 
 
-def non_imports(source_file: SourceFile) -> set[SourceFile]:
+def get_non_imports(source_file: SourceFile) -> set[SourceFile]:
     return {
         node_to_source_file(node=node, context=source_file)
         for node in source_file.parse()
@@ -69,4 +68,9 @@ def purge_unused_imports(source_file: SourceFile) -> SourceFile:
 
 
 def chip_wood(source_file: SourceFile) -> set[SourceFile]:
-    ...
+    imports = get_imports(source_file)
+    non_imports = get_non_imports(source_file)
+    return {
+        purge_unused_imports(add_imports(non_import, imports))
+        for non_import in non_imports
+    }
