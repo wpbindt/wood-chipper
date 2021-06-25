@@ -28,6 +28,6 @@ cases = [
 
 
 @pytest.mark.parametrize('case', cases)
-def test_chip_wood(case) -> None:
+def test_chip_wood(case: tuple[SourceFile, set[SourceFile]]) -> None:
     source_file, expected_output = case
     assert chip_wood(source_file) == expected_output

@@ -1,7 +1,3 @@
-# parse file to SourceFile object (filename and source lines)
-# convert SourceFile to ast object
-# extract the imports from the sourcefile object (tuple of str)
-# extract non-imports from SourceFile object, whose name is snake case version of class name (set of sourcefile objects)
 # compile list of imports of newly created files
 # combine the above 3 items in sourcefiles
 # write all SourceFile object to actual files in new module named after original file
@@ -12,7 +8,6 @@
 # SOMEWHERE:
 # deal with comments
 
-from __future__ import annotations
 import ast
 
 import autoflake  # type: ignore
