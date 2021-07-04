@@ -1,7 +1,4 @@
-# compile list of imports of newly created files
-# combine the above 3 items in sourcefiles
 # write all SourceFile object to actual files in new module named after original file
-# purge unused imports
 # clean code style for imports
 # include imports in __init__.py
 

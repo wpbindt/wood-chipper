@@ -3,6 +3,9 @@ import ast
 from dataclasses import dataclass
 from pathlib import Path
 
+from ast_utils import ast_stmt_to_name
+from object import Object
+
 
 @dataclass(frozen=True)
 class SourceFile:
@@ -25,3 +28,11 @@ class SourceFile:
 
     def write(self, path: Path) -> None:
         (path / self.filename).write_text(str(self))
+
+    @property
+    def top_level_objects(self) -> list[Object]:
+        return [
+            Object(name=ast_stmt_to_name(statement))
+            for statement in self.parse()
+            if not isinstance(statement, (ast.Import, ast.ImportFrom))
+        ]
