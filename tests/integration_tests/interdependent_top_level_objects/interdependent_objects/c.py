@@ -1,6 +1,5 @@
 import this
-
-from . import A
+from .a import A
 
 
 class C(A):

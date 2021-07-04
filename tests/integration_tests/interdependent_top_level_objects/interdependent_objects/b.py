@@ -1,4 +1,5 @@
-from . import A
+from .a import A
+
 
 class B:
     @staticmethod

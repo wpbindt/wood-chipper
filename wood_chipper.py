@@ -62,10 +62,44 @@ def purge_unused_imports(source_file: SourceFile) -> SourceFile:
     )
 
 
+def top_level_object_name(source_file: SourceFile) -> str:
+    node = source_file.parse()[0]
+    name = getattr(node, 'name', None)
+    if name is None:
+        raise ValueError('No named top-level object found')
+    return name
+
+
+def get_new_imports(source_files: set[SourceFile]) -> tuple[str, ...]:
+    return tuple(
+        f'from .{source_file.filename[:-len(".py")]} import {top_level_object_name(source_file)}'
+        for source_file in source_files
+    )
+
+
+def remove_self_import(
+    non_import: SourceFile,
+    imports: tuple[str, ...],
+) -> tuple[str, ...]:
+    self_import = f'from .{non_import.filename[:-len(".py")]} import {top_level_object_name(non_import)}'
+    return tuple(
+        import_line
+        for import_line in imports
+        if import_line != self_import
+    )
+
+
 def chip_wood(source_file: SourceFile) -> set[SourceFile]:
-    imports = get_imports(source_file)
+    old_imports = get_imports(source_file)
     non_imports = get_non_imports(source_file)
-    return {
-        purge_unused_imports(add_imports(non_import, imports))
-        for non_import in non_imports
-    }
+    new_imports = get_new_imports(non_imports)
+    imports = (
+        *old_imports,
+        *new_imports,
+    )
+    output = set()
+    for non_import in non_imports:
+        imports_to_be_added = remove_self_import(non_import, imports)
+        non_import_with_imports = add_imports(non_import, imports_to_be_added)
+        output.add(purge_unused_imports(non_import_with_imports))
+    return output
