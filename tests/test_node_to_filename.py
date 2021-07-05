@@ -2,7 +2,7 @@ import ast
 
 import pytest
 
-from node_to_source_file import node_to_filename
+from node_to_source_file import ast_stmt_to_filename
 
 
 happy_cases = [
@@ -16,7 +16,7 @@ happy_cases = [
 @pytest.mark.parametrize('case', happy_cases)
 def test_node_to_filename(case: tuple[ast.AST, str]) -> None:
     node, filename = case
-    assert node_to_filename(node) == filename
+    assert ast_stmt_to_filename(node) == filename
 
 
 no_name_nodes = [
@@ -38,4 +38,4 @@ no_name_nodes = [
 @pytest.mark.parametrize('node', no_name_nodes)
 def test_node_to_filename_raises_when_no_name(node: ast.AST) -> None:
     with pytest.raises(ValueError):
-        node_to_filename(node)
+        ast_stmt_to_filename(node)

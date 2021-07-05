@@ -1,5 +1,7 @@
 import ast
 import re
+
+from ast_utils import ast_stmt_to_name
 from source_file import SourceFile
 
 
@@ -8,13 +10,8 @@ def to_snake_case(name: str) -> str:
     return re.sub('([a-z0-9])([A-Z])', r'\1_\2', name).lower()
 
 
-def node_to_filename(node: ast.AST) -> str:
-    node_name = getattr(node, 'name', None)
-    if node_name is None:
-        raise ValueError(
-            f'Nameless top-level node on line {getattr(node, "lineno", "??")}'
-        )
-    return to_snake_case(node_name) + '.py'
+def ast_stmt_to_filename(statement: ast.stmt) -> str:
+    return to_snake_case(ast_stmt_to_name(statement)) + '.py'
 
 
 def node_to_source_lines(
@@ -36,6 +33,6 @@ def node_to_source_file(
     context: SourceFile
 ) -> SourceFile:
     return SourceFile(
-        filename=node_to_filename(node),
+        filename=ast_stmt_to_filename(node),
         lines=node_to_source_lines(node, context)
     )
