@@ -1,10 +1,3 @@
-# write all SourceFile object to actual files in new module named after original file
-# clean code style for imports
-# include imports in __init__.py
-
-# SOMEWHERE:
-# deal with comments
-
 import ast
 from pathlib import Path
 
