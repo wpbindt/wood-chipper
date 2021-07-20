@@ -68,10 +68,10 @@ def top_level_object_name(source_file: SourceFile) -> str:
 
 
 def get_new_imports(source_files: set[SourceFile]) -> tuple[str, ...]:
-    return tuple(
+    return tuple(sorted(
         f'from .{source_file.filename[:-len(".py")]} import {top_level_object_name(source_file)}'
         for source_file in source_files
-    )
+    ))
 
 
 def remove_self_import(
@@ -99,4 +99,10 @@ def chip_wood(source_file: SourceFile) -> set[SourceFile]:
         imports_to_be_added = remove_self_import(non_import, imports)
         non_import_with_imports = add_imports(non_import, imports_to_be_added)
         output.add(purge_unused_imports(non_import_with_imports))
+    output.add(
+        SourceFile(
+            filename='__init__.py',
+            lines=(*new_imports, '')
+        )
+    )
     return output
