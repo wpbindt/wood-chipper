@@ -1,4 +1,5 @@
 import ast
+import sys
 from pathlib import Path
 
 import autoflake  # type: ignore
@@ -111,3 +112,8 @@ def main(source_path: Path) -> None:
 
     for source_file in top_level_object_source_files:
         source_file.write(module)
+
+
+if __name__ == '__main__':
+    source_path = Path(sys.argv[1]).resolve()
+    main(source_path)
