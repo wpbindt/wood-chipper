@@ -14,7 +14,7 @@ happy_cases = [
 
 
 @pytest.mark.parametrize('case', happy_cases)
-def test_node_to_filename(case: tuple[ast.AST, str]) -> None:
+def test_node_to_filename(case: tuple[ast.stmt, str]) -> None:
     node, filename = case
     assert ast_stmt_to_filename(node) == filename
 
@@ -36,6 +36,6 @@ no_name_nodes = [
 
 
 @pytest.mark.parametrize('node', no_name_nodes)
-def test_node_to_filename_raises_when_no_name(node: ast.AST) -> None:
+def test_node_to_filename_raises_when_no_name(node: ast.stmt) -> None:
     with pytest.raises(ValueError):
         ast_stmt_to_filename(node)

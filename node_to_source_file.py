@@ -15,7 +15,7 @@ def ast_stmt_to_filename(statement: ast.stmt) -> str:
 
 
 def node_to_source_lines(
-    node: ast.AST,
+    node: ast.stmt,
     context: SourceFile
 ) -> tuple[str, ...]:
     offset = len(getattr(node, 'decorator_list', []))
@@ -25,11 +25,11 @@ def node_to_source_lines(
             node.lineno - 1 - offset, node.end_lineno
         )
     )
-    return (*node_lines, '')
+    return *node_lines, ''
 
 
 def node_to_source_file(
-    node: ast.AST,
+    node: ast.stmt,
     context: SourceFile
 ) -> SourceFile:
     return SourceFile(
