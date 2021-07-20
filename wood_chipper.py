@@ -6,6 +6,7 @@
 # deal with comments
 
 import ast
+from pathlib import Path
 
 import autoflake  # type: ignore
 
@@ -106,3 +107,14 @@ def chip_wood(source_file: SourceFile) -> set[SourceFile]:
         )
     )
     return output
+
+
+def main(source_path: Path) -> None:
+    input_source_file = SourceFile.from_file(source_path)
+    top_level_object_source_files = chip_wood(input_source_file)
+
+    module = source_path.with_suffix('')
+    module.mkdir()
+
+    for source_file in top_level_object_source_files:
+        source_file.write(module)
